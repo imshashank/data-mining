@@ -1,0 +1,59 @@
+#creating the feature vector
+
+import operator,csv
+from nltk import PorterStemmer
+from sklearn.naive_bayes import GaussianNB
+
+import numpy as np
+#import numpy as np
+
+feature_matrix_file = 'feature_matrix.pytext'
+
+docs= {}
+
+#create topics file with IDs
+
+for line in open(feature_matrix_file):
+	record = eval(line)
+
+	#print record['id']
+	docs[record['id']] =record['feature_vector']
+	#print record['id']
+	
+
+def read():
+	with open('./files/pre_processing.csv', 'rB') as f:
+		#writer = csv.writer(open("out_file", 'w'))
+		#features_file = open("feature_file.csv", 'w')
+		#opic_file = open("topic_file.csv", 'w')
+		reader = csv.reader(f)
+		article = {}
+		for row in reader:
+		#replace multiple spaces
+		#['newId', ' TITLE', ' DATE', ' TOPICS', ' PLACES', ' BODY']
+			
+			print row
+			try:
+				article['id'] = row[0]
+				article['title'] = row[1]
+				article['date'] = row[2]
+				article['topics'] = row[3]
+				article['places'] = row[4]
+
+				topics = article['topics']
+				#find the feature_vector of id
+				X =[]
+				Y=[]
+				#write feature vector in features and topics in file topics
+				for y in topics:
+					temp ={}
+					X.append(list(docs[article['id']]))
+					Y.append(y)
+					print y
+
+				
+				
+			except Exception, e:
+				print e
+	        #out_f.flush()
+read()

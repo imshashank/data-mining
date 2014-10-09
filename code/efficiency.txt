@@ -1,0 +1,158 @@
+with 80 20 split
+gaussian
+total docs
+21578
+total trainset
+8514
+offline cost
+0:00:32.835563
+offline cost
+0:01:03.021689
+test docs
+2258
+total success
+1277
+efficiency: 56.5
+
+bernoulli
+total docs
+21578
+total trainset
+8514
+offline cost
+0:00:31.512763
+offline cost
+0:01:57.400256
+test docs
+2258
+total success
+1644
+efficiency : 72.8
+
+MultinomialNB
+total docs
+21578
+total trainset
+8514
+offline cost
+0:00:31.595675
+offline cost
+0:00:09.453095
+test docs
+2258
+total success
+1720
+efficiency: 76.17
+
+60 - 40 split
+
+MultinomialNB
+total docs
+21578
+total trainset
+5695
+offline cost
+0:00:22.216996
+offline cost
+0:00:20.846624
+test docs
+4506
+total success
+3424
+efficiency:75.9
+
+bernoulli
+total docs
+21578
+total trainset
+5695
+offline cost
+0:00:24.808743
+offline cost
+0:01:38.456413
+test docs
+4506
+total success
+3242
+efficiency:
+
+gaussian
+21579
+total docs
+21578
+total trainset
+5695
+offline cost
+0:00:25.637987
+offline cost
+0:02:14.419105
+test docs
+4506
+total success
+2565
+efficiency : 56.9
+
+KNN
+k=3
+The accuracy of the system is 62.00
+('The total time of the execution  is 0:02:02.703219', 'seconds')
+
+
+k=5
+The accuracy of the system is 64.00
+('The total time of the execution  is 0:02:16.599799', 'seconds')
+
+
+k=7
+The accuracy of the system is 67.00
+('The total time of the execution  is 0:02:00.656269', 'seconds')
+
+
+k=9
+The accuracy of the system is 65.00
+('The total time of the execution  is 0:01:56.165304', 'seconds')
+
+
+
+k=11
+The accuracy of the system is 66.00
+('The total time of the execution  is 0:01:58.765790', 'seconds')
+
+
+k=13
+The accuracy of the system is 66.00
+('The total time of the execution  is 0:02:03.281071', 'seconds')
+
+
+60-40
+k=1
+('The total time of the training  is 0:00:01.403714', 'seconds')
+('The total time of the testing  is 0:01:38.311431', 'seconds')
+success
+3146
+The accuracy of the system is 69.00
+('The total time of the execution  is 0:02:34.306435', 'seconds')
+
+k=3
+18904
+('The total time of the training  is 0:00:01.388825', 'seconds')
+('The total time of the testing  is 0:01:34.294896', 'seconds')
+total test
+4547
+success
+3151
+The accuracy of the system is 69.00
+('The total time of the execution  is 0:02:26.505298', 'seconds')
+
+k=5
+18904
+('The total time of the training  is 0:01:37.525698', 'seconds')
+total test
+4547
+success
+3141
+The accuracy of the system is 69.00
+('The total time of the test  is 0:00:00.008079', 'seconds')
+s
+
+
