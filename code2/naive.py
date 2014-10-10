@@ -1,10 +1,7 @@
 #creating the feature vector
-
 import operator,csv
 from datetime import datetime
 from sklearn.metrics import precision_score
-
-
 from nltk import PorterStemmer
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import BernoulliNB
@@ -44,7 +41,7 @@ def split():
 	global train
 	global test
 	#print total
-	train_length = floor(total*.6)
+	train_length = floor(total*.8)
 	#print train_length
 	i=0
 	for x in docs:
@@ -178,13 +175,31 @@ def train_data():
 		#print clf.score(X, Y, sample_weight=None)
 		print "offline cost"
 		print str(datetime.now()-train_time)
-	
 
 
 def test_docs():
+	#get all topics
+	global docs_topics
+	topicsfp ={}
+	topicsfn ={}
+	topicstp ={}
+	topicstn ={}
+	print len(docs_topics)
+	for key in docs_topics:
+		t=docs_topics[key]
+		#print t
+		if t != '':
+			t = t.split(' ')
+			for val in t:
+				topicsfp[val]=0
+				topicsfn[val]=0
+				topicstp[val]=0
+				topicstn[val]=0
+
+
 	print "Testing the data now"
 	test_time = datetime.now()
-	success = 0
+	success = float(0)
 	global clf
 	global test
 	global docs
@@ -198,34 +213,38 @@ def test_docs():
 	#print temp
 	#print(clf.predict(temp))
 	i=0
-	total = 0
+	total = float(0)
 	for key in test:
-		try:
+		#try:
 			#print key
 			#print test.get(key)
-			topics = docs_topics.get(key)
-			if topics != '':
-				total=total+1
-				topics = topics.split(' ')
-				A = np.array(map(int,list(test.get(key))))	
-				test_topic = clf.predict(A)
+		topics = docs_topics.get(key)
+		if topics != '':
+			total=total+1
+			topics = topics.split(' ')
+			A = np.array(map(int,list(test.get(key))))	
+			test_topic = clf.predict(A)
+			test_topic =  ''.join(test_topic)
+			#print test_topic
+				#no result
+			for x in topics:
 				
-					#no result
-				for x in topics:
-					if test_topic == '' and x!= '':
-						false_negative+=1
-					y_pred.append(test_topic)
-					y_true.append(x)
-					if x == test_topic and x != '':
-					#	print "match"
-					#	print x
-						success+=1
-						true_positive +=1
-					else:
-						true_negative +=1
+				#y_pred.append(test_topic)
+				#y_true.append(x)
+				if x == test_topic and x != '':
+				#	print "match"
+				#	print x
+					topicstp[x]=topicstp[x]+1
+					success+=1
+					
+				else:
+					#falsenegative
+					topicsfn[x]=topicsfn[x]+1
+					##falsepositive
+					topicsfp[test_topic]=topicsfp[test_topic]+1
 		
-		except Exception,e:
-			print e
+		#except Exception,e:
+			#print e
 	
 		i = i+1
 
@@ -233,47 +252,32 @@ def test_docs():
 	print str(datetime.now()-test_time)
 	print "test docs"
 	print total
-	print "total success"
+	print "total predicted correct"
 	print success
-	print "fn"
-	print false_negative
-	print "tp"
-	print true_positive
-	print "tn"
-	print true_negative
-	#print y_true
-	#print y_pred
-	print precision_score(y_true, y_pred, average='weighted')
-
-'''
-precision = tp+(tp+fp)
-recall
-false_negative : predict different class but there was class
-
-coco
-tn: predicted topic of a doc 
-
-predicted actual
-11 tp
-00 tn
-01 fn
-10 fp
-
-80 - 20
-precision for gauss
-0.467621540429
-
-BernoulliNB
-0.538304716295
-
-multionomail
-0.549270703289
-
-
-precision
-
-'''
-
+	print "accuracy is"
+	print float((success/total)*100)
+	#print topicstp
+	#print topicsfn
+	#print topicsfp
+	avg = float(0)
+	precision = float(0)
+	i=float(0)
+	for x in topicstp:
+		#print x
+		try:
+			#print topicstp[x]
+			#print topicsfp[x]
+			#print topicsfn[x]
+			precision = topicstp[x]/(topicstp[x]+topicsfp[x])
+			i = float(i+1)
+		except:
+			pass
+		avg+=precision
+		#print precision
+	#print avg
+	#print i
+	print "precision"
+	print float((avg/i)*100)
 
 
 load_docs()        
