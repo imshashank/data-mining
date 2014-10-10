@@ -2,10 +2,12 @@ import re, os, glob, math,csv
 from xml.dom.minidom import parse, parseString
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
-from wpull.backport.collections import Counter
-#from collections import Counter
 from datetime import datetime
-
+try:
+    from collections import Counter
+except ImportError:
+    from wpull.backport.collections import Counter
+  
 #global variables
 train_time = datetime.now()
 topicDict = {}

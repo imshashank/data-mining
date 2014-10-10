@@ -19,9 +19,9 @@ train={}
 test={}
 X = []
 Y= []
-clf = GaussianNB()
+#clf = GaussianNB()
 #clf = BernoulliNB()
-#clf = MultinomialNB()
+clf = MultinomialNB()
 
 #create topics file with IDs
 
