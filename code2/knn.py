@@ -349,7 +349,7 @@ def findAccuracy():
     print("The total running  is " +str(datetime.now()-start_time), "seconds")
 
 
-#the main file
+#build it and shit it
 getTermVector(effCount)
 splitDocs()
 predictDocs()

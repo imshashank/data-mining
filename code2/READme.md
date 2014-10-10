@@ -4,6 +4,8 @@ By
 Shashank Agarwal (agarwal.202@osu.edu)
 Anurag Kalra (kalra.25@osu.edu)
 
+all code is in the code2 folder and reports are in the report2 fodler in pdf and docx format
+
 ##Instructions
 
 We are using the feature vector made in the first assignment which is in the file 'feature_matrix.pytext'

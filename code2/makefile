@@ -1,5 +1,3 @@
-All: step1
-
 naiveG:
 	python naiveG.py
 
@@ -11,6 +9,3 @@ naiveM:
 
 knn: 
 	python knn.py
-	
-step1: knn
-	python naive.py
