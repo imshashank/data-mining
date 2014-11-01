@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 import time, csv
 import matplotlib.pyplot as plt
@@ -7,12 +8,13 @@ from sklearn.cluster import MiniBatchKMeans, KMeans
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn import metrics
+import math
 
 
 filename = 'graph_coord.pytext'
 X=[]
 labels={}
-
+docs_labels={}
 print "loading docs"
 i = 0
 with open('foo.csv', 'rb') as csvfile:
@@ -21,8 +23,9 @@ with open('foo.csv', 'rb') as csvfile:
         print i
         X.append(list(row))
         i = i+1
-        if i>1200:
-        	break
+       #	if i>1200:
+       # 	break
+
 '''
 
 for line in open(filename):
@@ -36,10 +39,20 @@ filename = 'label_id.pytext'
 i=0
 for line in open(filename):
 		record = eval(line)
-		if labels.get(record['lab_id']) != '':
-			labels(record['lab_id']) = labels.get(record['lab_id']) + 1
+		docs_labels[record['id']] = record['lab_id']
+		if labels.get(record['lab_id']) != None:
+			labels[record['lab_id']] = labels.get(record['lab_id']) +1
 		else:
-			labels(record['lab_id']) = 1
+			labels[record['lab_id']] = 1
+		#if i > 1461:
+		#	break
+		i =i+1
+
+filename = 'label_id.pytext'
+i=0
+for line in open(filename):
+		record = eval(line)
+		docs_labels[record['id']] = (record['lab_id']) 
 		if i > 1461:
 			break
 		i =i+1
@@ -54,7 +67,11 @@ print "docs loaded building cluster"
 
 
 batch_size = 45
-centers = [[1, 1], [-1, -1], [1, -1],[0, 0],[0, 1]]
+k = 10
+
+#centers = [[50, 100], [100, 200], [50, 50],[150, 150]]
+centers=np.random.randint(size=(k,2),low=20,high=200)
+
 n_clusters = len(centers)
 
 
@@ -127,6 +144,24 @@ ax.set_title('Difference')
 
 pl.show()
 
+
+
+plt.xlabel('n_init')
+plt.ylabel('inertia')
+n_runs = 5
+#plt.legend(plots, legends)
+plt.title("Mean inertia for various k-means init across %d runs" % n_runs)
+fig = plt.figure()
+for k in range(n_clusters):
+	my_members = k_means.labels_ == k
+	color = cm.spectral(float(k) / n_clusters, 1)
+	plt.plot(X[my_members, 0], X[my_members, 1], 'o', marker='.', c=color)
+	cluster_center = k_means.cluster_centers_[k]
+	plt.plot(cluster_center[0], cluster_center[1], 'o',markerfacecolor=color, markeredgecolor='k', markersize=6)
+	plt.title("Example cluster allocation with a single random init\n" "with MiniBatchKMeans")
+plt.show()
+
+
 print k_means.labels_
 
 print k_means.labels_.shape
@@ -134,6 +169,74 @@ print k_means.labels_.shape
 
 print np.amax(k_means.labels_)
 #entropy
+
+#n_clusters
+#labels
+#docs_labels
+i = 0
+ent = {}
+size_cl={}
+for k in range(n_clusters):
+	temp_cl = {}
+	len_c = 0
+	for x in k_means.labels_:
+		#cluster
+		if x == k:
+			l = docs_labels.get(i)
+			if temp_cl.get(l) != None:
+				temp_cl[l] = temp_cl.get(l) + 1
+			else:
+				temp_cl[l] = 1
+			len_c =len_c  +1
+		i = i+1
+	#finding cluster entropy
+	e = 0
+	print "cluster number "
+	print k
+	size_cl[k]=len_c
+	total = len_c
+	print "total docs in cluster"
+	print total
+	for key, value in temp_cl.iteritems():
+		val = value/total
+		#print "Total"
+		#print total
+		#print "count of label"
+		#print value
+		
+		#print value/total
+		log_val= math.log(val,2)
+		#print log_val
+		#print val*log_val
+		#print '\n'
+		e = e + (val*log_val)
+	e = e * -1
+	print "entropy for cluster"
+	print k
+	print e
+	ent[k]=e
+
+
+
+total = len(X)
+print '\n'
+print "total"
+print total
+fin_e=0
+
+for keys in ent:
+	print keys
+	print size_cl.get(keys)
+	fin_e = fin_e + (size_cl.get(keys)/total)*(ent.get(keys))
+	
+print "fin_e"
+print fin_e
+
+
+		
+
+#hashtable labels has all labels and count of docs in it
+#for each cluster find 
 
 #find total labels and docs in each label
 #find label distribution in each cluster
