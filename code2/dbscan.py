@@ -9,6 +9,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn import metrics
 from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
 import math
 
 
@@ -21,10 +22,11 @@ i = 0
 with open('foo.csv', 'rb') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
     for row in spamreader:
-        print i
+        if i%100 == 0:
+			print i
         X.append(list(row))
         i = i+1
-       	if i>1200:
+       	if i>120:
        		break
 
 '''
@@ -76,8 +78,11 @@ batch_size = 45
 #n_clusters = len(centers)
 
 t0 = time.time()
-db = DBSCAN(eps=1.5, min_samples=5, metric='manhattan').fit(X)
 
+#db = DBSCAN(eps=5, min_samples=5, metric='manhattan').fit(X)
+X_scaled = StandardScaler().fit_transform(X)
+
+db = DBSCAN(eps=5, min_samples=2, metric='euclidean', algorithm='auto', leaf_size=30).fit(X_scaled)
 #k_means = KMeans(init='k-means++', n_clusters=n_clusters,verbose=True)
 
 #k_means.fit(X)
@@ -105,8 +110,9 @@ colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
 for k in (unique_labels):
 	col = cm.spectral(float(k) / n_clusters_, 1)
 	if k == -1:
-		# Black used for noise.
 		col = 'k'
+		# Black used for noise.
+		
 	class_member_mask = (labels_db == k)
 	xy = X[class_member_mask & core_samples_mask]
 	plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col, markeredgecolor='k', markersize=14)
@@ -122,12 +128,13 @@ plt.show()
 #n_clusters
 #labels
 #docs_labels
-i = 0
+
 ent = {}
 size_cl={}
 for k in range(n_clusters_):
 	temp_cl = {}
 	len_c = 0
+	i = 0
 	for x in labels_db:
 		#cluster
 		if x == k:
@@ -173,11 +180,17 @@ print "total"
 print total
 fin_e=0
 
+tot = 0
 for keys in ent:
 	print keys
+	tot = tot + size_cl.get(keys)
 	print size_cl.get(keys)
 	fin_e = fin_e + (size_cl.get(keys)/total)*(ent.get(keys))
 	
+print "total"
+print total
+print "valid points"
+print tot
 print "fin_e"
 print fin_e
 
