@@ -13,11 +13,12 @@ from sklearn.preprocessing import StandardScaler
 import math
 
 
-filename = 'graph_coord.pytext'
+
 X=[]
 labels={}
 docs_labels={}
 print "loading docs"
+'''
 i = 0
 with open('foo.csv', 'rb') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
@@ -31,13 +32,18 @@ with open('foo.csv', 'rb') as csvfile:
 
 '''
 
+filename = 'graph_coord.pytext'
+i =0
 for line in open(filename):
 		record = eval(line)
 		temp =[]
 		temp.append(record['x'])
 		temp.append(record['y'])
 		X.append(temp)
-'''	
+		print i
+		i=i+1
+
+
 filename = 'label_id.pytext'
 i=0
 for line in open(filename):
@@ -56,13 +62,13 @@ i=0
 for line in open(filename):
 		record = eval(line)
 		docs_labels[record['id']] = (record['lab_id']) 
-		if i > 1461:
-			break
+		#if i > 1461:
+		#	break
 		i =i+1
 
 X = np.array(X,dtype=float)
 print X
-
+print X.shape
 print "docs loaded building cluster"
 #labels_true = np.array(labels)
 #print labels_true
@@ -82,7 +88,7 @@ t0 = time.time()
 #db = DBSCAN(eps=5, min_samples=5, metric='manhattan').fit(X)
 X_scaled = StandardScaler().fit_transform(X)
 
-db = DBSCAN(eps=5, min_samples=2, metric='euclidean', algorithm='auto', leaf_size=30).fit(X_scaled)
+db = DBSCAN(eps=.3, min_samples=10, metric='manhattan', algorithm='auto').fit(X_scaled)
 #k_means = KMeans(init='k-means++', n_clusters=n_clusters,verbose=True)
 
 #k_means.fit(X)
@@ -102,7 +108,7 @@ print('Labels: ')
 print labels_db
 ##############################################################################
 # Plot result
-import matplotlib.pyplot as plt
+
 
 # Black removed and is used for noise instead.
 unique_labels = set(labels_db)
@@ -128,6 +134,16 @@ plt.show()
 #n_clusters
 #labels
 #docs_labels
+
+print X.shape
+
+print labels_db
+
+print labels_db.shape
+
+
+
+
 
 ent = {}
 size_cl={}
