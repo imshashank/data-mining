@@ -88,7 +88,7 @@ t0 = time.time()
 #db = DBSCAN(eps=5, min_samples=5, metric='manhattan').fit(X)
 X_scaled = StandardScaler().fit_transform(X)
 
-db = DBSCAN(eps=.3, min_samples=10, metric='manhattan', algorithm='auto').fit(X_scaled)
+db = DBSCAN(eps=.3, min_samples=3, metric='manhattan', algorithm='auto').fit(X_scaled)
 #k_means = KMeans(init='k-means++', n_clusters=n_clusters,verbose=True)
 
 #k_means.fit(X)
@@ -115,15 +115,15 @@ unique_labels = set(labels_db)
 colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
 for k in (unique_labels):
 	col = cm.spectral(float(k) / n_clusters_, 1)
-	if k == -1:
-		col = 'k'
+	if k != -1:
+		#col = 'k'
 		# Black used for noise.
 		
-	class_member_mask = (labels_db == k)
-	xy = X[class_member_mask & core_samples_mask]
-	plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col, markeredgecolor='k', markersize=14)
-	xy = X[class_member_mask & ~core_samples_mask]
-	plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col, markeredgecolor='k', markersize=6)
+		class_member_mask = (labels_db == k)
+		xy = X[class_member_mask & core_samples_mask]
+		plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col, markeredgecolor='k', markersize=14)
+		xy = X[class_member_mask & ~core_samples_mask]
+		plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col, markeredgecolor='k', markersize=6)
 
 plt.title('Estimated number of clusters: %d' % n_clusters_)
 plt.show()
