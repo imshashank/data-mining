@@ -87,10 +87,10 @@ t0 = time.time()
 
 #db = DBSCAN(eps=5, min_samples=5, metric='manhattan').fit(X)
 X_scaled = StandardScaler().fit_transform(X)
-
-db = DBSCAN(eps=.3, min_samples=3, metric='manhattan', algorithm='auto').fit(X_scaled)
+t0 = time.time()
+db = DBSCAN(eps=.05, min_samples=3, metric='euclidean', algorithm='auto').fit(X_scaled)
 #k_means = KMeans(init='k-means++', n_clusters=n_clusters,verbose=True)
-
+t_batch = time.time() - t0
 #k_means.fit(X)
 t_batch = time.time() - t0
 #k_means_labels = k_means.labels_
@@ -209,7 +209,8 @@ print "valid points"
 print tot
 print "fin_e"
 print fin_e
-
+print "time"
+print t_batch
 #k_means_cluster_centers = k_means.cluster_centers_
 #k_means_labels_unique = np.unique(k_means_labels)
 
