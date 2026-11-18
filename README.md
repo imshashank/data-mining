@@ -1,7 +1,7 @@
 Data Mining Project Assignment 1
 ===========
 By
-Shashank Agarwal (agarwal.202@osu.edu)
+[Shashank Agarwal](https://www.linkedin.com/in/shashankagarwal2/) (agarwal.202@osu.edu)
 Anurag Kalra (kalra.25@osu.edu)
 
 All code is in the code folder.
